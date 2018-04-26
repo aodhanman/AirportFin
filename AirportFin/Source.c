@@ -26,6 +26,7 @@ void addPassenger(struct node** head);
 //void displayPassenger(node* head);
 int present(struct node* head, int passNum);
 void listPassengers();
+void statistics(int chosen, int demo);
 //FILE *file = fopen("passenger.txt", "a+");
 int searchBypassNumOrName(struct node* head);
 int searchByPassNum(struct node* head, int passNum);
@@ -89,8 +90,29 @@ int main() {
 			break;
 		}
 		else if (choice == 6) {
+			int chosen;
+			int demo;
 			printf("6) Generate statistics\n");
-			statistics;
+
+			printf("1. % of players who travel from the UK\n");
+			printf("2. % of players who travel from the Rest of Europe\n");
+			printf("3. % of players who travel from the Asia\n");
+			printf("4. % of players who travel from the Americas\n");
+			printf("5. % of players who travel from the Australasia\n");
+			printf("6. % of players who spent on average one day in Ireland\n");
+			printf("7. % of players who spent on average less than 3 days in Ireland\n");
+			printf("8. % of players who spent on average less than 7 days in Ireland\n");
+			printf("9. % of players who spent on average more than 7 days in Ireland\n");
+			printf("choose stat \n");
+			scanf("%d", &chosen);
+			printf("1. Travel Class\n");
+			printf("2. Born Before 1980\n");
+
+			printf("choose stat \n");
+			scanf("%d", &demo);
+
+			printf("\n");
+			statistics(chosen, demo);
 		}
 		else if (choice == 7) {
 			printf("7) Print all passenger details into a report file.\n");
@@ -142,7 +164,7 @@ void addPassenger(struct node** head)
 		scanf(" %s", &tempEmail);
 		if (emailValid(tempEmail) == 1)
 		{
-			newnode->passing.email == tempEmail;
+			*newnode->passing.email = tempEmail;
 			fprintf(file, " Email: %s ", newnode->passing.email);
 			email++;
 		}
@@ -264,20 +286,7 @@ int emailValid(char emailaddress[]) {
 	return valid;
 }
 
-void statistics() {
+void statistics(int choice, int demo) {
 	
-	printf("A. % of players who travel from the UK\n");
-	printf("B. % of players who travel from the Rest of Europe\n");
-	printf("C. % of players who travel from the Asia\n");
-	printf("D. % of players who travel from the Americas\n");
-	printf("E. % of players who travel from the Australasia\n");
-	printf("F. % of players who spent on average one day in Ireland\n");
-	printf("G. % of players who spent on average less than 3 days in Ireland\n");
-	printf("H. % of players who spent on average less than 7 days in Ireland\n");
-	printf("I. % of players who spent on average more than 7 days in Ireland\n");
-	printf("\n");
-	printf("1. Travel Class\n");
-	printf("2. Born Before 1980\n");
-
-	printf("\n");
+	
 }
