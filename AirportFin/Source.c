@@ -3,6 +3,12 @@
 #include <conio.h>
 #include <stdlib.h>
 
+#define NUMPASSWORDS 3
+#define NUMUSERS 3
+#define LENGTH 8
+#define PASSWWORD_FILE "passwords.txt"
+#define PASSWWORD_FILE "users.txt"
+
 typedef struct passenger {
 	int passNum ;
 	char fName[10];
@@ -16,11 +22,15 @@ typedef struct passenger {
 } passengers_t;
 
  struct node {
+	 int value;
 	passengers_t passing;
 	struct node* next;
 };
 
-
+ struct users {
+	 char username[LENGTH];
+	 char password[LENGTH];
+};
 
 void addPassenger(struct node** head);
 //void displayPassenger(node* head);
@@ -30,6 +40,8 @@ void statistics(int chosen, int demo);
 //FILE *file = fopen("passenger.txt", "a+");
 int searchBypassNumOrName(struct node* head);
 int searchByPassNum(struct node* head, int passNum);
+void sort(struct node* top);
+
 
 
 int main() {
@@ -38,7 +50,7 @@ int main() {
 	//struct node* tail = NULL;
 
 	int choice = 0;
-
+	int correct = 0;
 
 
 	printf("What would you like to do?\n");
@@ -72,7 +84,7 @@ int main() {
 		else if (choice == 2) {
 			printf("2) Display all passenger details to screen\n");
 			listPassengers();
-			scanf("%d", &choice);
+			
 			
 		}
 		else if (choice == 3) {
@@ -128,7 +140,15 @@ int main() {
 		}
 	}
 }
-
+void loggedIn() {
+	FILE* userFile = fopen("users.txt", "r");
+	char uName[10];
+	char password[10];
+	printf("Enter username \n");
+	scanf("%s", &uName);
+	printf("Enter password \n");
+	scanf("%s", &password);
+}
 void addPassenger(struct node** head)
 {
 	FILE *file = fopen("passenger.txt", "a+");
@@ -144,28 +164,28 @@ void addPassenger(struct node** head)
 
 	printf("Please enter the passenger number\n");
 	scanf("%d", &newnode->passing.passNum);
-	fprintf(file, "\nPass num: %d ", newnode->passing.passNum);
+	fprintf(file, "\nPass num:%d ", newnode->passing.passNum);
 
 	printf("Please enter the passenger first name\n");
 	scanf("%s", &newnode->passing.fName);
-	fprintf(file, " First name: %s ", newnode->passing.fName);
+	fprintf(file, " First name:%s ", newnode->passing.fName);
 
 	printf("Please enter the passenger second name\n");
 	scanf("%s", &newnode->passing.sName);
-	fprintf(file, " Second name: %s ", newnode->passing.sName);
+	fprintf(file, " Second name:%s ", newnode->passing.sName);
 
 
 	printf("Please enter the passenger year born\n");
 	scanf("%d", &newnode->passing.yearBorn);
-	fprintf(file, " Year: %d ", newnode->passing.yearBorn);
+	fprintf(file, " Year:%d ", newnode->passing.yearBorn);
 
 	printf("Please enter the passenger email \n");
 	while (email == 0) {
-		scanf(" %s", &tempEmail);
+		scanf("%s", &tempEmail);
 		if (emailValid(tempEmail) == 1)
 		{
-			*newnode->passing.email = tempEmail;
-			fprintf(file, " Email: %s ", newnode->passing.email);
+			strcpy(newnode->passing.email, tempEmail);
+			fprintf(file, " Email:%s ", newnode->passing.email);
 			email++;
 		}
 		else {
@@ -178,26 +198,26 @@ void addPassenger(struct node** head)
 	printf(" 1 UK	\n2 Rest of Europe	\n3 Asia	\n4 Americas	\n5 Australasia \n");
 
 	scanf("%d", &newnode->passing.areaFrom);
-	fprintf(file, " From: %d ", newnode->passing.areaFrom);
+	fprintf(file, " From:%d ", newnode->passing.areaFrom);
 
 
 	printf("What was your travel class\n");
 	printf("1 Economy	2 Premium Economy	3 Business Class	4 First Class\n");
 
 	scanf("%d", &newnode->passing.seating);
-	fprintf(file, " Class: %d ", newnode->passing.seating);
+	fprintf(file, " Class:%d ", newnode->passing.seating);
 
 	printf("How many trips to Ireland do you make per year?\n");
 	printf("1 Less than three times per year \n 2 Less than five times per year \n 3 More than five times per year\n");
 
 	scanf("%d", &newnode->passing.trips);
-	fprintf(file, " Trips: %d ", newnode->passing.trips);
+	fprintf(file, " Trips:%d ", newnode->passing.trips);
 
 
 	printf("On average how long is your duration?\n");
 	printf(" 1 One day \n 2 Less than 3 days\n 3 Less than 7 days \n 4 More than 7 days\n");
 	scanf("%d", &newnode->passing.duration);
-	fprintf(file, " Duration: %d ", newnode->passing.duration);
+	fprintf(file, " Duration:%d ", newnode->passing.duration);
 
 
 }
@@ -254,10 +274,10 @@ void listPassengers() {
 		int c;
 
 		while ((c = fgetc(read)) != EOF)
-			//read character from file until end of file
 		{
 			putchar(c);
 		}
+		printf("\n");
 		fclose(read);
 	}
 
@@ -289,4 +309,26 @@ int emailValid(char emailaddress[]) {
 void statistics(int choice, int demo) {
 	
 	
+}
+
+
+void sort(struct node* top)
+{
+	struct node* new1;
+	struct node* count;
+
+	new1 = top;
+
+	for (; new1->next != NULL; new1 = new1->next)
+	{
+		for (count = new1->next; count != NULL; count = count->next)
+		{
+			if (new1->value > count->value)
+			{
+				int temp = new1->value;
+				new1->value = count->value;
+				count->value = temp;
+			}
+		}
+	}
 }

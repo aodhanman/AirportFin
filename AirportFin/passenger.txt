@@ -1,3 +1,6 @@
 
 Pass num: 1  First name: wat  Second name: erf  Year: 1923  Email: adsf  From: 2  Class: 4  Trips: 3  Duration: 5 
-Pass num: 356  First name: wert  Second name: terd  Year: 1234  Email: ออออออออออออออออออออออออออออออออออออýýýýÿÿÿÿฬ~ฐÛ  From: 3  Class: 2  Trips: 4  Duration: 4 
+
+Pass num: 346  First name: aldo  Second name: jose  Year: 1934  Email: aldo@gmail.com  From: 2  Class: 3  Trips: 4  Duration: 5 
+Pass num: 377  First name: red  Second name: john  Year: 1936  Email: john@red.com  From: 3  Class: 2  Trips: 3  Duration: 4 
+Pass num: 455  First name: pope  Second name: tim  Year: 1967  Email: fred@deeder.com  From: 3  Class: 2  Trips: 3  Duration: 4 
