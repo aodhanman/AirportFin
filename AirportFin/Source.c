@@ -41,8 +41,8 @@ void statistics(int chosen, int demo);
 int searchBypassNumOrName(struct node* head);
 int searchByPassNum(struct node* head, int passNum);
 void sort(struct node* top);
-
-
+void deletepassengers(struct node **head);
+void report(struct node* head);
 
 int main() {
 
@@ -90,16 +90,17 @@ int main() {
 		else if (choice == 3) {
 			printf("Please enter the passenger number\n");
 
-			searchBypassNumOrName(passengerList);
+			searchBypassNumOrName(&passengerList);
 			break;
 		}
 		else if (choice == 4) {
 			printf("4) Update a passenger statistic\n");
-			break;
+			
 		}
 		else if (choice == 5) {
 			printf("5) Delete passenger\n");
-			break;
+			deletepassengers(&passengerList);
+			
 		}
 		else if (choice == 6) {
 			int chosen;
@@ -128,7 +129,8 @@ int main() {
 		}
 		else if (choice == 7) {
 			printf("7) Print all passenger details into a report file.\n");
-			break;
+			report(passengerList);
+			
 		}
 		else if (choice == 8) {
 			printf("8) List all the passenger of the following the UK in order of year born.\n");
@@ -151,7 +153,6 @@ void loggedIn() {
 }
 void addPassenger(struct node** head)
 {
-	FILE *file = fopen("passenger.txt", "a+");
 	int tempPassNum;
 	int email = 0;
 	char tempEmail[20];
@@ -164,20 +165,16 @@ void addPassenger(struct node** head)
 
 	printf("Please enter the passenger number\n");
 	scanf("%d", &newnode->passing.passNum);
-	fprintf(file, "\nPass num:%d ", newnode->passing.passNum);
 
 	printf("Please enter the passenger first name\n");
 	scanf("%s", &newnode->passing.fName);
-	fprintf(file, " First name:%s ", newnode->passing.fName);
 
 	printf("Please enter the passenger second name\n");
 	scanf("%s", &newnode->passing.sName);
-	fprintf(file, " Second name:%s ", newnode->passing.sName);
 
 
 	printf("Please enter the passenger year born\n");
 	scanf("%d", &newnode->passing.yearBorn);
-	fprintf(file, " Year:%d ", newnode->passing.yearBorn);
 
 	printf("Please enter the passenger email \n");
 	while (email == 0) {
@@ -185,7 +182,6 @@ void addPassenger(struct node** head)
 		if (emailValid(tempEmail) == 1)
 		{
 			strcpy(newnode->passing.email, tempEmail);
-			fprintf(file, " Email:%s ", newnode->passing.email);
 			email++;
 		}
 		else {
@@ -198,26 +194,22 @@ void addPassenger(struct node** head)
 	printf(" 1 UK	\n2 Rest of Europe	\n3 Asia	\n4 Americas	\n5 Australasia \n");
 
 	scanf("%d", &newnode->passing.areaFrom);
-	fprintf(file, " From:%d ", newnode->passing.areaFrom);
 
 
 	printf("What was your travel class\n");
 	printf("1 Economy	2 Premium Economy	3 Business Class	4 First Class\n");
 
 	scanf("%d", &newnode->passing.seating);
-	fprintf(file, " Class:%d ", newnode->passing.seating);
 
 	printf("How many trips to Ireland do you make per year?\n");
 	printf("1 Less than three times per year \n 2 Less than five times per year \n 3 More than five times per year\n");
 
 	scanf("%d", &newnode->passing.trips);
-	fprintf(file, " Trips:%d ", newnode->passing.trips);
 
 
 	printf("On average how long is your duration?\n");
 	printf(" 1 One day \n 2 Less than 3 days\n 3 Less than 7 days \n 4 More than 7 days\n");
 	scanf("%d", &newnode->passing.duration);
-	fprintf(file, " Duration:%d ", newnode->passing.duration);
 
 
 }
@@ -331,4 +323,66 @@ void sort(struct node* top)
 			}
 		}
 	}
+}
+
+void deletepassengers(struct node** head) {
+	int present = 0;
+	int tempNum;
+	struct node *temp;
+	struct node *prev;
+	int status;
+	temp = (struct node*)malloc(sizeof(struct node));
+	temp = *head;
+	prev = NULL; 
+
+	printf("\nPlease enter the passenger number of the passengers you want to delete: ");
+	scanf("%d", &tempNum);
+
+	while (temp != NULL) {
+		if (temp->passing.passNum == tempNum) {//if passNum and tempNum are equal 
+			printf("\nDeleting the passengers with passenger Number: %d\n", temp->passing.passNum);
+
+			present = 1;
+
+			if (prev != NULL) {
+				prev->next = temp->next;
+			}
+			else {
+				*head = temp->next;
+			}
+			free(temp);
+
+			break;
+		}
+
+		prev = temp;
+		temp = temp->next;
+	}
+		if (present == 0) {
+		printf("\nSorry, no passengers with passNum Number: %d in the database!\n", tempNum);//can't find the passengers
+	}
+}
+void report(struct node* head) {
+
+	FILE *file = fopen("passenger.txt", "w+");
+	struct node* newnode;
+	struct node* temp;
+
+	newnode = (struct node*)malloc(sizeof(struct node));
+	while (newnode != NULL) {
+
+		fprintf(file, "\nPass num:%d ", newnode->passing.passNum);
+		fprintf(file, " First name:%s ", newnode->passing.fName);
+		fprintf(file, " Second name:%s ", newnode->passing.sName);
+		fprintf(file, " Year:%d ", newnode->passing.yearBorn);
+		fprintf(file, " Email:%s ", newnode->passing.email);
+		fprintf(file, " From:%d ", newnode->passing.areaFrom);
+		fprintf(file, " Class:%d ", newnode->passing.seating);
+		fprintf(file, " Trips:%d ", newnode->passing.trips);
+		fprintf(file, " Duration:%d ", newnode->passing.duration);
+
+		newnode = newnode->next;
+	}
+	
+
 }
